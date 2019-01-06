@@ -7,9 +7,9 @@ import org.junit.Test;
 
 import com.euexcel.api.EuSimpleExcel;
 
-public class ReflectUtilTest {
+public class EuExcelTest {
 	
-	//@Test
+	@Test
 	public void testOne(){
 		List<User> list=new ArrayList<User>();
 		User user=new User();
@@ -23,7 +23,6 @@ public class ReflectUtilTest {
 	public void testTwo(){
 		List<User> list=new ArrayList<User>();
 		list=new EuSimpleExcel<User>(User.class).read("F:\\demo.xls");
-		
 		System.out.println(list);
 	}
 }
