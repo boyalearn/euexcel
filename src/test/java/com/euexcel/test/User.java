@@ -4,10 +4,10 @@ import com.euexcel.annotation.Cell;
 
 public class User {
 	
-	@Cell(name="–’√˚",order=1,cellWidth=400)
+	@Cell(name="name",order=1,cellWidth=400)
 	private String name;
 	
-	@Cell(name="ƒÍ¡‰",order=0,cellWidth=400)
+	@Cell(name="age",order=0,cellWidth=400)
 	private Integer age;
 
 	public String getName() {
@@ -24,6 +24,11 @@ public class User {
 
 	public void setAge(int age) {
 		this.age = age;
+	}
+
+	@Override
+	public String toString() {
+		return "User [name=" + name + ", age=" + age + "]";
 	}
 	
 	

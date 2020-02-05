@@ -17,12 +17,16 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 
 import com.euexcel.core.EuMateInfo;
 import com.euexcel.evt.CellInfoEvt;
+import com.euexcel.exception.WorkbookException;
 import com.euexcel.util.ReflectUtil;
 
-public class POIExcel implements ThreeExcel{
+public class HSSPOIExcel implements ThreeExcel{
+	
+	private Workbook workBook;
 	
 	/**
 	 * key         dataType
@@ -38,7 +42,7 @@ public class POIExcel implements ThreeExcel{
 	 *  void setCellValue(RichTextString value);
 	 *  void setCellValue(String value);
 	 */
-	public POIExcel(){
+	public HSSPOIExcel(){
 		poiTypeMap.put(String.class, String.class);
 		poiTypeMap.put(Calendar.class, Calendar.class);
 		poiTypeMap.put(Date.class, Date.class);
@@ -49,27 +53,17 @@ public class POIExcel implements ThreeExcel{
 		poiTypeMap.put(Long.class, Double.class);
 	}
 
-	public List<Object> readData(String fileName,EuMateInfo euMateInfo){
-		try {
-			return doReadData(fileName,euMateInfo);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-	@SuppressWarnings("resource")
-	private List<Object> doReadData(String fileName,EuMateInfo euMateInfo) throws Exception {
+	public List<Object> readData(String fileName,EuMateInfo euMateInfo) throws Exception {
 		FileInputStream in;
-		HSSFWorkbook workBook;
+		
 		try {
 			in=new FileInputStream(fileName);
 			workBook=new HSSFWorkbook(in);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-			return null;
+			return new ArrayList<Object>();
 		} catch (IOException e) {
-			e.printStackTrace();
-			return null;
+			throw new WorkbookException("init HSSFWorkbook error");
 		}
 		Sheet sheet=workBook.getSheetAt(0);
 		List<CellInfoEvt> celllist=euMateInfo.getCellList();
@@ -108,7 +102,7 @@ public class POIExcel implements ThreeExcel{
 		else if(Calendar.class.isAssignableFrom(paramType)){
 			ReflectUtil.exe(bean, method, (Calendar)data);
 		}else{
-			throw new RuntimeException("不支持的数据异常");
+			throw new RuntimeException("set method invoke error!!!");
 		}
 	}
 	
@@ -147,8 +141,7 @@ public class POIExcel implements ThreeExcel{
 	}
 
 	public <T> void writeData( List<T> dataList, String fileName, String sheetName,EuMateInfo euMateInfo) {
-		// TODO Auto-generated method stub
-		HSSFWorkbook workBook=new HSSFWorkbook();
+		Workbook workBook=new HSSFWorkbook();
 		Sheet sheet=workBook.createSheet(sheetName);
 		int rowNum=0;
 		Row headRow=sheet.createRow(rowNum);

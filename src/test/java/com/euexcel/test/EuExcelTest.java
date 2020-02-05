@@ -16,13 +16,28 @@ public class EuExcelTest {
 		user.setName("erwer");
 		user.setAge(18);
 		list.add(user);
-		new EuSimpleExcel<User>(User.class).write("F:\\demo.xls", list, "用户列表");
+		new EuSimpleExcel<User>(User.class).write("F:\\demo.xls", list, "demosheet");
 	}
 	
 	@Test
 	public void testTwo(){
 		List<User> list=new ArrayList<User>();
-		list=new EuSimpleExcel<User>(User.class).read("F:\\demo.xls");
+		list=new EuSimpleExcel<User>(User.class).read("F:\\demo2.xlsx");
 		System.out.println(list);
+	}
+	
+	public static void main(String args[]){
+		
+		List<User> list=new ArrayList<User>();
+		User user=new User();
+		user.setName("erwer");
+		user.setAge(18);
+		list.add(user);
+		new EuSimpleExcel<User>(User.class).write("F:\\demo2.xlsx", list, "demosheet");
+		
+		/*List<User> list=new ArrayList<User>();
+		//list=new EuSimpleExcel<User>(User.class).read("F:\\demo2.xlsx");
+		list=new EuSimpleExcel<User>(User.class).read("F:\\demo.xls");
+		System.out.println(list);*/
 	}
 }
