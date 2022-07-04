@@ -12,6 +12,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.euexcel.util.StringUtil;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -21,6 +23,9 @@ import com.euexcel.core.EuMateInfo;
 import com.euexcel.evt.CellInfoEvt;
 import com.euexcel.exception.WorkbookException;
 import com.euexcel.util.ReflectUtil;
+
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 
 public class XSSPOIExcel implements ThreeExcel {
 
@@ -173,6 +178,52 @@ public class XSSPOIExcel implements ThreeExcel {
 			OutputStream out = new FileOutputStream(fileName);
 			workBook.write(out);
 			out.close();
+			workBook.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+	public <T> void writeData(List<T> dataList, String fileName, String sheetName, EuMateInfo euMateInfo, HttpServletResponse response) {
+		Workbook workBook = new XSSFWorkbook();
+		Sheet sheet = workBook.createSheet(sheetName);
+		int rowNum = 0;
+		Row headRow = sheet.createRow(rowNum);
+		List<CellInfoEvt> cellList = euMateInfo.getCellList();
+
+		for (CellInfoEvt cellInfo : cellList) {
+			headRow.createCell(cellInfo.getOrder()).setCellValue(cellInfo.getName());
+			;
+		}
+		rowNum++;
+		for (int i = 0; i < dataList.size(); i++) {
+			Object bean = dataList.get(i);
+			Row dateRow = sheet.createRow(rowNum);
+			for (CellInfoEvt cellInfo : cellList) {
+				Method method = ReflectUtil.getGetMethod(euMateInfo.getFieldMethodRelation(), cellInfo.getFieldName());
+				Class<?> returnType = method.getReturnType();
+
+				try {
+					Cell cell = dateRow.createCell(cellInfo.getOrder());
+					SetCellValue(cell, ReflectUtil.exe(bean, method), returnType);
+				} catch (Exception e) {
+
+					e.printStackTrace();
+				}
+			}
+			rowNum++;
+		}
+
+		try {
+			ServletOutputStream outputStream = response.getOutputStream();
+			response.setContentType("application/vnd.ms-excel;charset=utf-8");
+			response.addHeader("Content-Disposition", "attachment;filename=" + fileName);
+			workBook.write(outputStream);
 			workBook.close();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
