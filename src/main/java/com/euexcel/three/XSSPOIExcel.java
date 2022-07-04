@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.Method;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -221,8 +222,9 @@ public class XSSPOIExcel implements ThreeExcel {
 
 		try {
 			ServletOutputStream outputStream = response.getOutputStream();
+			response.setCharacterEncoding("UTF-8");
 			response.setContentType("application/vnd.ms-excel;charset=utf-8");
-			response.addHeader("Content-Disposition", "attachment;filename=" + fileName);
+			response.addHeader("Content-Disposition", "Attachment;Filename=" + URLEncoder.encode(fileName, "utf8"));
 			workBook.write(outputStream);
 			workBook.close();
 		} catch (FileNotFoundException e) {

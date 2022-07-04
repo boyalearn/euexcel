@@ -4,18 +4,6 @@
 	<groupId>com.excel</groupId>
 	<artifactId>euexcel</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>6</source>
-					<target>6</target>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
 
 	<dependencies>
 		<dependency>
@@ -48,7 +36,7 @@
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
-			<version>2.3</version>
+			<version>2.5</version>
 		</dependency>
 	</dependencies>
 	<repositories>
@@ -57,4 +45,17 @@
 			<url>http://maven.aliyun.com/nexus/content/groups/public</url>
 		</repository>
 	</repositories>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<configuration>
+					<excludeTransitive>false</excludeTransitive>
+					<stripVersion>false</stripVersion>
+					<outputDirectory>./lib</outputDirectory>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>

@@ -7,26 +7,26 @@ public interface EuExcel {
 
 	/**
 	 *
-	 * @param fileName È«ÎÄ¼şÂ·¾¶
-	 * @param dataList ĞèÒªµ¼ÈëExcel±í¸ñÊı¾İ
-	 * @param sheetName sheet±íÃû³Æ
+	 * @param fileName å…¨æ–‡ä»¶è·¯å¾„
+	 * @param dataList éœ€è¦å¯¼å…¥Excelè¡¨æ ¼æ•°æ®
+	 * @param sheetName sheetè¡¨åç§°
 	 */
 	<T> void write(String fileName,List<T> dataList,String sheetName);
 
 
 	/**
 	 *
-	 * @param fileName È«ÎÄ¼şÂ·¾¶
-	 * @param dataList ĞèÒªµ¼ÈëExcel±í¸ñÊı¾İ
-	 * @param sheetName sheet±íÃû³Æ
+	 * @param fileName å…¨æ–‡ä»¶è·¯å¾„
+	 * @param dataList éœ€è¦å¯¼å…¥Excelè¡¨æ ¼æ•°æ®
+	 * @param sheetName sheetè¡¨åç§°
 	 */
 	<T> void write(String fileName, List<T> dataList, String sheetName, HttpServletResponse response);
 
 
 	/**
 	 *
-	 * @param fileName ¶ÁÈ¡ÎÄ¼şÂ·¾¶
-	 * @return  ·µ»ØÊı¾İList
+	 * @param fileName è¯»å–æ–‡ä»¶è·¯å¾„
+	 * @return  è¿”å›æ•°æ®List
 	 */
 	<T> List<T> read(String fileName);
 }
